@@ -2,7 +2,9 @@
 
 import { useState, useRef } from 'react';
 import Map, { Marker, Popup, NavigationControl, FullscreenControl } from 'react-map-gl';
+import Image from 'next/image';
 import { Sighting } from '../types/sighting';
+import ghostIcon from '../assets/icon_ghostW.png';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface SightingsMapProps {
@@ -30,7 +32,7 @@ export default function SightingsMap({ sightings, height = "600px" }: SightingsM
         ref={mapRef}
         initialViewState={initialViewState}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/rasagy/cj8s4e9ij15ad2rp8s5ddj0ey"
+        mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={MAPBOX_TOKEN}
       >
         {/* Map Controls */}
@@ -50,10 +52,12 @@ export default function SightingsMap({ sightings, height = "600px" }: SightingsM
             }}
           >
             <div className="cursor-pointer hover:scale-110 transition-transform">
-              <img
-                src="/ghostmapicon.png"
+              <Image
+                src={ghostIcon}
                 alt="Ghost sighting"
-                style={{ width: '40px', height: '40px' }}
+                width={20}
+                height={20}
+                className="object-contain"
               />
             </div>
           </Marker>
@@ -74,25 +78,25 @@ export default function SightingsMap({ sightings, height = "600px" }: SightingsM
                 <img
                   src={popupInfo.imageUrl}
                   alt="Ghost sighting"
-                  className="w-full h-40 object-cover rounded-md mb-3"
+                  className="w-full h-40 object-cover rounded-lg mb-3"
                 />
               )}
               <div className="space-y-2">
                 <div>
-                  <span className="font-bold text-black">Date of Sighting:</span>
-                  <p className="text-sm text-gray-800">{popupInfo.date}</p>
+                  <span className="font-semibold text-[#FF9F40]">Date of Sighting:</span>
+                  <p className="text-sm text-[#F8F8F8]">{popupInfo.date}</p>
                 </div>
                 <div>
-                  <span className="font-bold text-black">Time of Sighting:</span>
-                  <p className="text-sm text-gray-800">{popupInfo.timeOfDay}</p>
+                  <span className="font-semibold text-[#FF9F40]">Time of Sighting:</span>
+                  <p className="text-sm text-[#F8F8F8]">{popupInfo.timeOfDay}</p>
                 </div>
                 <div>
-                  <span className="font-bold text-black">Type of Sighting:</span>
-                  <p className="text-sm text-gray-800">{popupInfo.tag}</p>
+                  <span className="font-semibold text-[#FF9F40]">Type of Sighting:</span>
+                  <p className="text-sm text-[#F8F8F8]">{popupInfo.tag}</p>
                 </div>
                 <div>
-                  <span className="font-bold text-black">Sighting Notes:</span>
-                  <p className="text-sm text-gray-800">{popupInfo.notes}</p>
+                  <span className="font-semibold text-[#FF9F40]">Sighting Notes:</span>
+                  <p className="text-sm text-[#F8F8F8]">{popupInfo.notes}</p>
                 </div>
               </div>
             </div>

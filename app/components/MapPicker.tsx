@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import Map, { Marker, NavigationControl } from 'react-map-gl';
+import Image from 'next/image';
+import ghostIcon from '../assets/icon_ghostW.png';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface MapPickerProps {
@@ -30,7 +32,7 @@ export default function MapPicker({ onLocationSelect, selectedPosition }: MapPic
       <Map
         initialViewState={initialViewState}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/rasagy/cj8s4e9ij15ad2rp8s5ddj0ey"
+        mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={MAPBOX_TOKEN}
         onClick={handleMapClick}
       >
@@ -43,10 +45,12 @@ export default function MapPicker({ onLocationSelect, selectedPosition }: MapPic
             anchor="bottom"
           >
             <div className="cursor-pointer">
-              <img
-                src="/ghostmapicon.png"
+              <Image
+                src={ghostIcon}
                 alt="Selected location"
-                style={{ width: '40px', height: '40px' }}
+                width={20}
+                height={20}
+                className="object-contain"
               />
             </div>
           </Marker>

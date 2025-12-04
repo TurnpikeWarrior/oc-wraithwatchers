@@ -23,7 +23,7 @@ export async function loadSightings(): Promise<Sighting[]> {
         }));
         resolve(sightings);
       },
-      error: (error) => {
+      error: (error: Error) => {
         reject(error);
       },
     });

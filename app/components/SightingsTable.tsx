@@ -21,8 +21,8 @@ export default function SightingsTable({ sightings }: SightingsTableProps) {
     if (!sortField) return sightings;
     
     const sorted = [...sightings].sort((a, b) => {
-      let aVal = a[sortField];
-      let bVal = b[sortField];
+      let aVal: string | number = a[sortField];
+      let bVal: string | number = b[sortField];
       
       // Handle date sorting
       if (sortField === 'date') {

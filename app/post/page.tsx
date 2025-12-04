@@ -115,54 +115,57 @@ export default function PostSighting() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Date of Sighting */}
-        <div>
-          <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
-            Date of Sighting
-          </label>
-          <input
-            type="date"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors [color-scheme:dark]"
-            required
-          />
-        </div>
+        {/* Date, Time, and Type - Same Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Date of Sighting */}
+          <div>
+            <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
+              Date of Sighting
+            </label>
+            <input
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors [color-scheme:dark]"
+              required
+            />
+          </div>
 
-        {/* Time of Sighting */}
-        <div>
-          <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
-            Time of Sighting
-          </label>
-          <select
-            value={formData.time}
-            onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
-            required
-          >
-            <option value="" className="bg-zinc-900">Select a time...</option>
-            {TIMES_OF_DAY.map(time => (
-              <option key={time} value={time} className="bg-zinc-900">{time}</option>
-            ))}
-          </select>
-        </div>
+          {/* Time of Sighting */}
+          <div>
+            <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
+              Time of Sighting
+            </label>
+            <select
+              value={formData.time}
+              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
+              required
+            >
+              <option value="" className="bg-zinc-900">Select a time...</option>
+              {TIMES_OF_DAY.map(time => (
+                <option key={time} value={time} className="bg-zinc-900">{time}</option>
+              ))}
+            </select>
+          </div>
 
-        {/* Type of Sighting */}
-        <div>
-          <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
-            Type of Sighting
-          </label>
-          <select
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
-            required
-          >
-            <option value="" className="bg-zinc-900">Select a type...</option>
-            {APPARITION_TAGS.map(tag => (
-              <option key={tag} value={tag} className="bg-zinc-900">{tag}</option>
-            ))}
-          </select>
+          {/* Type of Sighting */}
+          <div>
+            <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
+              Type of Sighting
+            </label>
+            <select
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
+              required
+            >
+              <option value="" className="bg-zinc-900">Select a type...</option>
+              {APPARITION_TAGS.map(tag => (
+                <option key={tag} value={tag} className="bg-zinc-900">{tag}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Sighting Notes */}

@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import casperLogo from '../assets/casper.png';
 
 export default function Header() {
   const pathname = usePathname();
@@ -11,7 +13,13 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <span className="text-3xl">👻</span>
+            <Image 
+              src={casperLogo} 
+              alt="WraithWatchers Logo" 
+              width={40} 
+              height={40}
+              className="object-contain"
+            />
             <h1 className="text-2xl font-bold text-[#F8F8F8] tracking-tight">
               WraithWatchers
             </h1>

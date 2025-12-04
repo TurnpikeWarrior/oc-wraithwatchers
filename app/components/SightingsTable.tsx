@@ -1,27 +1,83 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Sighting } from '../types/sighting';
 
 interface SightingsTableProps {
   sightings: Sighting[];
 }
 
+type SortField = 'date' | 'city' | 'state' | 'timeOfDay' | 'tag';
+type SortDirection = 'asc' | 'desc';
+
 export default function SightingsTable({ sightings }: SightingsTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState<SortField | null>('date');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const itemsPerPage = 20;
   
-  const totalPages = Math.ceil(sightings.length / itemsPerPage);
+  // Sort sightings based on current sort field and direction
+  const sortedSightings = useMemo(() => {
+    if (!sortField) return sightings;
+    
+    const sorted = [...sightings].sort((a, b) => {
+      let aVal = a[sortField];
+      let bVal = b[sortField];
+      
+      // Handle date sorting
+      if (sortField === 'date') {
+        aVal = new Date(aVal as string).getTime();
+        bVal = new Date(bVal as string).getTime();
+      }
+      
+      // String comparison
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return sortDirection === 'asc' 
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      }
+      
+      // Numeric comparison
+      return sortDirection === 'asc' 
+        ? (aVal as number) - (bVal as number)
+        : (bVal as number) - (aVal as number);
+    });
+    
+    return sorted;
+  }, [sightings, sortField, sortDirection]);
+  
+  const totalPages = Math.ceil(sortedSightings.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentSightings = sightings.slice(startIndex, endIndex);
+  const currentSightings = sortedSightings.slice(startIndex, endIndex);
+  
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      // Toggle direction if same field
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // New field, default to ascending
+      setSortField(field);
+      setSortDirection('asc');
+    }
+    setCurrentPage(1); // Reset to first page when sorting
+  };
+  
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) {
+      return <span className="text-zinc-500 ml-1">⇅</span>;
+    }
+    return sortDirection === 'asc' 
+      ? <span className="ml-1">↑</span>
+      : <span className="ml-1">↓</span>;
+  };
 
   const handleExport = () => {
     // Create CSV content
     const headers = ['Date', 'City', 'State', 'Time of Day', 'Type', 'Notes', 'Latitude', 'Longitude'];
     const csvContent = [
       headers.join(','),
-      ...sightings.map(s => [
+      ...sortedSightings.map(s => [
         s.date,
         s.city,
         s.state,
@@ -60,11 +116,46 @@ export default function SightingsTable({ sightings }: SightingsTableProps) {
           <table className="w-full">
             <thead className="bg-zinc-800">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">Date</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">City</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">State</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">Time</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">Type</th>
+                <th 
+                  className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40] cursor-pointer hover:bg-zinc-700 transition-colors select-none"
+                  onClick={() => handleSort('date')}
+                >
+                  <div className="flex items-center">
+                    Date{getSortIcon('date')}
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40] cursor-pointer hover:bg-zinc-700 transition-colors select-none"
+                  onClick={() => handleSort('city')}
+                >
+                  <div className="flex items-center">
+                    City{getSortIcon('city')}
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40] cursor-pointer hover:bg-zinc-700 transition-colors select-none"
+                  onClick={() => handleSort('state')}
+                >
+                  <div className="flex items-center">
+                    State{getSortIcon('state')}
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40] cursor-pointer hover:bg-zinc-700 transition-colors select-none"
+                  onClick={() => handleSort('timeOfDay')}
+                >
+                  <div className="flex items-center">
+                    Time{getSortIcon('timeOfDay')}
+                  </div>
+                </th>
+                <th 
+                  className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40] cursor-pointer hover:bg-zinc-700 transition-colors select-none"
+                  onClick={() => handleSort('tag')}
+                >
+                  <div className="flex items-center">
+                    Type{getSortIcon('tag')}
+                  </div>
+                </th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-[#FF9F40]">Notes</th>
               </tr>
             </thead>

@@ -22,3 +22,4 @@ export type ApparitionTag =
   | "Cold Spot"
   | "Full-Body Apparition";
 
+

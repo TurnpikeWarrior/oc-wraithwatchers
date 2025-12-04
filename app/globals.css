@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "leaflet/dist/leaflet.css";
 
 :root {
   --background: #000000;
@@ -20,22 +19,42 @@ body {
   font-family: system-ui, -apple-system, 'Inter', sans-serif;
 }
 
-/* Leaflet popup styling to match dark theme */
-.leaflet-popup-content-wrapper {
+/* Mapbox popup styling to match dark theme */
+.mapboxgl-popup-content {
   background: #1a1a1a;
   color: #F8F8F8;
   border-radius: 12px;
   box-shadow: 0 3px 14px rgba(0,0,0,0.8);
+  padding: 0;
 }
 
-.leaflet-popup-tip {
-  background: #1a1a1a;
+.mapboxgl-popup-close-button {
+  color: #F8F8F8;
+  font-size: 24px;
+  padding: 4px 8px;
 }
 
-.leaflet-popup-close-button {
-  color: #F8F8F8 !important;
+.mapboxgl-popup-close-button:hover {
+  background-color: rgba(255, 159, 64, 0.1);
+  color: #FF9F40;
 }
 
-.leaflet-popup-close-button:hover {
-  color: #FF9F40 !important;
+.mapboxgl-popup-tip {
+  border-top-color: #1a1a1a;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: #1a1a1a;
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: #1a1a1a;
+}
+
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #1a1a1a;
+}
+
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: #1a1a1a;
 }

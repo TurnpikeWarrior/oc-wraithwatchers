@@ -1,18 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-
-// Dynamic import to avoid SSR issues with Leaflet
-const MapPicker = dynamic(() => import('../components/MapPicker'), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[400px] bg-zinc-900 rounded-xl flex items-center justify-center">
-      <p className="text-zinc-400">Loading map...</p>
-    </div>
-  ),
-});
+import MapPicker from '../components/MapPicker';
 
 const TIMES_OF_DAY = ['Morning', 'Afternoon', 'Evening', 'Night', 'Dawn', 'Midnight'];
 const APPARITION_TAGS = [
@@ -74,7 +64,7 @@ export default function PostSighting() {
             type="date"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
+            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors [color-scheme:dark]"
             required
           />
         </div>

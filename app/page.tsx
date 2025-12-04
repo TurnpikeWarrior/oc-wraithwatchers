@@ -1,21 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { Sighting } from './types/sighting';
 import { loadSightings, getRecentSighting, getMostGhostlyCity } from './utils/loadSightings';
 import FilterPanel, { FilterOptions } from './components/FilterPanel';
 import SightingsTable from './components/SightingsTable';
-
-// Dynamic import to avoid SSR issues with Leaflet
-const SightingsMap = dynamic(() => import('./components/SightingsMap'), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[600px] bg-zinc-900 rounded-xl flex items-center justify-center">
-      <p className="text-zinc-400">Loading map...</p>
-    </div>
-  ),
-});
+import SightingsMap from './components/SightingsMap';
 
 export default function Home() {
   const [allSightings, setAllSightings] = useState<Sighting[]>([]);

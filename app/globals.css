@@ -1,26 +1,41 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #F8F8F8;
+  --accent-orange: #FF9F40;
+  --accent-gray: #6E6E6E;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: system-ui, -apple-system, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, 'Inter', sans-serif;
+}
+
+/* Leaflet popup styling to match dark theme */
+.leaflet-popup-content-wrapper {
+  background: #1a1a1a;
+  color: #F8F8F8;
+  border-radius: 12px;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.8);
+}
+
+.leaflet-popup-tip {
+  background: #1a1a1a;
+}
+
+.leaflet-popup-close-button {
+  color: #F8F8F8 !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #FF9F40 !important;
 }

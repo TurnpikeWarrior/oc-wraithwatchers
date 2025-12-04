@@ -19,42 +19,44 @@ body {
   font-family: system-ui, -apple-system, 'Inter', sans-serif;
 }
 
-/* Mapbox popup styling to match dark theme */
+/* Mapbox popup styling to match Moonlight theme (minimal high-contrast) */
 .mapboxgl-popup-content {
-  background: #1a1a1a;
-  color: #F8F8F8;
-  border-radius: 12px;
-  box-shadow: 0 3px 14px rgba(0,0,0,0.8);
+  background: #ffffff;
+  color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
   padding: 0;
+  border: 2px solid #000000;
 }
 
 .mapboxgl-popup-close-button {
-  color: #F8F8F8;
+  color: #000000;
   font-size: 24px;
   padding: 4px 8px;
+  font-weight: bold;
 }
 
 .mapboxgl-popup-close-button:hover {
-  background-color: rgba(255, 159, 64, 0.1);
-  color: #FF9F40;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .mapboxgl-popup-tip {
-  border-top-color: #1a1a1a;
+  border-top-color: #000000;
 }
 
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-  border-top-color: #1a1a1a;
+  border-top-color: #000000;
 }
 
 .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
-  border-bottom-color: #1a1a1a;
+  border-bottom-color: #000000;
 }
 
 .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-  border-right-color: #1a1a1a;
+  border-right-color: #000000;
 }
 
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
-  border-left-color: #1a1a1a;
+  border-left-color: #000000;
 }

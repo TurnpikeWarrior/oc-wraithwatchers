@@ -30,7 +30,7 @@ export default function SightingsMap({ sightings, height = "600px" }: SightingsM
         ref={mapRef}
         initialViewState={initialViewState}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
+        mapStyle="mapbox://styles/rasagy/cj8s4e9ij15ad2rp8s5ddj0ey"
         mapboxAccessToken={MAPBOX_TOKEN}
       >
         {/* Map Controls */}
@@ -69,30 +69,30 @@ export default function SightingsMap({ sightings, height = "600px" }: SightingsM
             closeOnClick={false}
             maxWidth="300px"
           >
-            <div className="p-2">
+            <div className="p-3">
               {popupInfo.imageUrl && (
                 <img
                   src={popupInfo.imageUrl}
                   alt="Ghost sighting"
-                  className="w-full h-40 object-cover rounded-lg mb-3"
+                  className="w-full h-40 object-cover rounded-md mb-3"
                 />
               )}
               <div className="space-y-2">
                 <div>
-                  <span className="font-semibold text-[#FF9F40]">Date of Sighting:</span>
-                  <p className="text-sm text-gray-700">{popupInfo.date}</p>
+                  <span className="font-bold text-black">Date of Sighting:</span>
+                  <p className="text-sm text-gray-800">{popupInfo.date}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-[#FF9F40]">Time of Sighting:</span>
-                  <p className="text-sm text-gray-700">{popupInfo.timeOfDay}</p>
+                  <span className="font-bold text-black">Time of Sighting:</span>
+                  <p className="text-sm text-gray-800">{popupInfo.timeOfDay}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-[#FF9F40]">Type of Sighting:</span>
-                  <p className="text-sm text-gray-700">{popupInfo.tag}</p>
+                  <span className="font-bold text-black">Type of Sighting:</span>
+                  <p className="text-sm text-gray-800">{popupInfo.tag}</p>
                 </div>
                 <div>
-                  <span className="font-semibold text-[#FF9F40]">Sighting Notes:</span>
-                  <p className="text-sm text-gray-700">{popupInfo.notes}</p>
+                  <span className="font-bold text-black">Sighting Notes:</span>
+                  <p className="text-sm text-gray-800">{popupInfo.notes}</p>
                 </div>
               </div>
             </div>

@@ -30,7 +30,7 @@ export default function MapPicker({ onLocationSelect, selectedPosition }: MapPic
       <Map
         initialViewState={initialViewState}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
+        mapStyle="mapbox://styles/rasagy/cj8s4e9ij15ad2rp8s5ddj0ey"
         mapboxAccessToken={MAPBOX_TOKEN}
         onClick={handleMapClick}
       >

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Sighting } from './types/sighting';
-import { loadSightings, getRecentSighting, getMostGhostlyCity } from './utils/loadSightings';
+import { loadSightings, getRecentSighting, getRecentSightingLocation, getMostGhostlyCity } from './utils/loadSightings';
 import FilterPanel, { FilterOptions } from './components/FilterPanel';
 import SightingsTable from './components/SightingsTable';
 import SightingsMap from './components/SightingsMap';
@@ -67,7 +67,7 @@ export default function Home() {
       {/* Stats Section */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold text-center text-[#F8F8F8] mb-8">Sightings Stats</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-zinc-900 border-2 border-zinc-700 rounded-xl p-8 text-center">
             <h3 className="text-lg font-medium text-zinc-400 mb-2">Total Sightings:</h3>
             <p className="text-4xl font-bold text-[#F8F8F8]">{allSightings.length.toLocaleString()}</p>
@@ -75,6 +75,10 @@ export default function Home() {
           <div className="bg-zinc-900 border-2 border-zinc-700 rounded-xl p-8 text-center">
             <h3 className="text-lg font-medium text-zinc-400 mb-2">Most Recent Sighting:</h3>
             <p className="text-4xl font-bold text-[#F8F8F8]">{getRecentSighting(allSightings)}</p>
+          </div>
+          <div className="bg-zinc-900 border-2 border-zinc-700 rounded-xl p-8 text-center">
+            <h3 className="text-lg font-medium text-zinc-400 mb-2">Most Recent Location:</h3>
+            <p className="text-2xl font-bold text-[#F8F8F8]">{getRecentSightingLocation(allSightings)}</p>
           </div>
           <div className="bg-zinc-900 border-2 border-zinc-700 rounded-xl p-8 text-center">
             <h3 className="text-lg font-medium text-zinc-400 mb-2">Most Ghostly City:</h3>

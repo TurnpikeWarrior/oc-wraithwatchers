@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MapPicker from '../components/MapPicker';
 
-const TIMES_OF_DAY = ['Morning', 'Afternoon', 'Evening', 'Night', 'Dawn', 'Midnight'];
+const TIMES_OF_DAY = ['Dawn', 'Morning', 'Afternoon', 'Evening', 'Night', 'Midnight'];
 const APPARITION_TAGS = [
   'Headless Spirit',
   'Poltergeist',
@@ -26,7 +26,9 @@ export default function PostSighting() {
   });
   const [selectedPosition, setSelectedPosition] = useState<[number, number] | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate form
@@ -35,9 +37,67 @@ export default function PostSighting() {
       return;
     }
 
-    // In a real app, we would save this data
-    // For now, just redirect to thank you page
-    router.push('/thank-you');
+    setSubmitting(true);
+
+    try {
+      // Get city and state from coordinates using reverse geocoding
+      const [lat, lng] = selectedPosition;
+      let city = 'Unknown';
+      let state = 'Unknown';
+
+      try {
+        const geocodeResponse = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
+        );
+        const geocodeData = await geocodeResponse.json();
+        
+        if (geocodeData.features && geocodeData.features.length > 0) {
+          const feature = geocodeData.features[0];
+          const context = feature.context || [];
+          
+          // Extract city and state from context
+          const placeContext = context.find((c: any) => c.id.startsWith('place'));
+          const regionContext = context.find((c: any) => c.id.startsWith('region'));
+          
+          if (placeContext) city = placeContext.text;
+          if (regionContext) state = regionContext.short_code?.replace('US-', '') || regionContext.text;
+        }
+      } catch (geocodeError) {
+        console.error('Geocoding error:', geocodeError);
+        // Continue with Unknown values
+      }
+
+      // Submit to API
+      const response = await fetch('/api/sightings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: formData.date,
+          latitude: lat,
+          longitude: lng,
+          city,
+          state,
+          notes: formData.notes,
+          timeOfDay: formData.time,
+          tag: formData.type,
+          imageUrl: '',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit sighting');
+      }
+
+      // Success - redirect to thank you page
+      router.push('/thank-you');
+    } catch (error) {
+      console.error('Error submitting sighting:', error);
+      alert('Failed to submit sighting. Please try again.');
+      setSubmitting(false);
+    }
   };
 
   const handleLocationSelect = (lat: number, lng: number) => {
@@ -74,14 +134,17 @@ export default function PostSighting() {
           <label className="block text-lg font-medium text-[#F8F8F8] mb-2">
             Time of Sighting
           </label>
-          <input
-            type="text"
+          <select
             value={formData.time}
             onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            placeholder="e.g., 10:15PM PM EST"
-            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] placeholder-zinc-600 focus:outline-none focus:border-[#FF9F40] transition-colors"
+            className="w-full px-4 py-3 bg-transparent border-2 border-zinc-700 rounded-xl text-[#F8F8F8] focus:outline-none focus:border-[#FF9F40] transition-colors"
             required
-          />
+          >
+            <option value="" className="bg-zinc-900">Select a time...</option>
+            {TIMES_OF_DAY.map(time => (
+              <option key={time} value={time} className="bg-zinc-900">{time}</option>
+            ))}
+          </select>
         </div>
 
         {/* Type of Sighting */}
@@ -135,9 +198,10 @@ export default function PostSighting() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-4 bg-black border-2 border-white text-white text-xl font-bold rounded-xl hover:bg-white hover:text-black transition-all"
+          disabled={submitting}
+          className="w-full py-4 bg-black border-2 border-white text-white text-xl font-bold rounded-xl hover:bg-white hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Post Your Sighting
+          {submitting ? 'Posting...' : 'Post Your Sighting'}
         </button>
       </form>
     </div>

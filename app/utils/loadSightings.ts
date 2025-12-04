@@ -1,33 +1,48 @@
-import Papa from 'papaparse';
 import { Sighting } from '../types/sighting';
+import { supabase } from './supabase';
 
 export async function loadSightings(): Promise<Sighting[]> {
-  const response = await fetch('/data/ghost_sightings_12000_with_images.csv');
-  const csvText = await response.text();
-  
-  return new Promise((resolve, reject) => {
-    Papa.parse(csvText, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        const sightings: Sighting[] = results.data.map((row: any) => ({
-          date: row['Date of Sighting'],
-          latitude: parseFloat(row['Latitude of Sighting']),
-          longitude: parseFloat(row['Longitude of Sighting']),
-          city: row['Nearest Approximate City'],
-          state: row['US State'],
-          notes: row['Notes about the sighting'],
-          timeOfDay: row['Time of Day'],
-          tag: row['Tag of Apparition'],
-          imageUrl: row['Image Link'] || '',
-        }));
-        resolve(sightings);
-      },
-      error: (error: Error) => {
-        reject(error);
-      },
-    });
-  });
+  try {
+    console.log('Attempting to load sightings from Supabase...');
+    
+    const { data, error } = await supabase
+      .from('ghost_sightings')
+      .select('*')
+      .order('date', { ascending: false });
+
+    if (error) {
+      console.error('Error loading sightings from Supabase:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code,
+      });
+      
+      // Return empty array instead of throwing to prevent app crash
+      console.warn('Returning empty array due to error. Make sure the ghost_sightings table exists in Supabase.');
+      return [];
+    }
+
+    console.log(`Successfully loaded ${data?.length || 0} sightings from Supabase`);
+
+    // Map database columns to the Sighting interface
+    const sightings: Sighting[] = (data || []).map((row: any) => ({
+      date: row.date,
+      latitude: row.latitude,
+      longitude: row.longitude,
+      city: row.city,
+      state: row.state,
+      notes: row.notes,
+      timeOfDay: row.time_of_day,
+      tag: row.tag,
+      imageUrl: row.image_url || '',
+    }));
+
+    return sightings;
+  } catch (error) {
+    console.error('Unexpected error loading sightings:', error);
+    return [];
+  }
 }
 
 export function getRecentSighting(sightings: Sighting[]): string {
@@ -45,6 +60,17 @@ export function getRecentSighting(sightings: Sighting[]): string {
   if (daysDiff === 0) return 'Today';
   if (daysDiff === 1) return '1 Day Ago';
   return `${daysDiff} Days Ago`;
+}
+
+export function getRecentSightingLocation(sightings: Sighting[]): string {
+  if (sightings.length === 0) return 'No sightings';
+  
+  const sortedByDate = [...sightings].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  
+  const mostRecent = sortedByDate[0];
+  return `${mostRecent.city}, ${mostRecent.state}`;
 }
 
 export function getMostGhostlyCity(sightings: Sighting[]): string {

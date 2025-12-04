@@ -16,12 +16,12 @@ export default function Header() {
             <Image 
               src={casperLogo} 
               alt="WraithWatchers Logo" 
-              width={40} 
-              height={40}
+              width={100} 
+              height={100}
               className="object-contain"
             />
             <h1 className="text-2xl font-bold text-[#F8F8F8] tracking-tight">
-              WraithWatchers
+              Catch Me If You Can!
             </h1>
           </Link>
           
